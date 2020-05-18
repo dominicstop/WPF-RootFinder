@@ -1,0 +1,650 @@
+﻿<UserControl 
+    x:Class="RootFinding.Bisection"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+    xmlns:local="clr-namespace:RootFinding"
+    mc:Ignorable="d"
+    
+    xmlns:System="clr-namespace:System;assembly=mscorlib"
+    xmlns:metro="http://metro.mahapps.com/winfx/xaml/controls"
+    xmlns:dragablz="clr-namespace:Dragablz;assembly=Dragablz"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+    xmlns:materialColors="clr-namespace:MaterialDesignColors;assembly=MaterialDesignColors"
+    xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
+    xmlns:Math="clr-namespace:WpfMath.Controls;assembly=WpfMath"
+             
+    d:DesignHeight="1000" 
+    d:DesignWidth ="{StaticResource WindowDefaultWidth }">
+    
+    <ScrollViewer
+        HorizontalScrollBarVisibility="Auto"
+        VerticalScrollBarVisibility="Visible"
+        VerticalAlignment="Stretch">
+        <!--SV Root Container: Border for spacing-->
+        <Border Margin="25 20 25 40">
+            <StackPanel>
+                <!--Card: Input-->
+                <materialDesign:Card
+                    UniformCornerRadius="{StaticResource Double-CardCornerRadius}"
+                    materialDesign:ShadowAssist.ShadowDepth="Depth4">
+                    <!--Card Root Container-->
+                    <StackPanel>
+                        <!--Seperate Container-->
+                        <StackPanel Margin="{StaticResource Thickness-PaddingDefault}">
+                            <!--Title and Icon-->
+                            <StackPanel Orientation="Horizontal">
+                                <!--Icon-->
+                                <materialDesign:PackIcon
+                                    VerticalAlignment="Center"
+                                    Margin="0 3 0 0"
+                                    Kind="Division"
+                                    Width="30"
+                                    Height="30"/>
+                                <!--Title-->
+                                <TextBlock
+                                Style="{StaticResource TB-Title}"
+                                    FontSize="20"
+                                    Text="Bisection Method"
+                                    Margin="10 0 0 0"/>
+                            </StackPanel>
+                            <!--Description-->
+                            <Border>
+                                <TextBlock 
+                                    Style="{StaticResource TB-Description}"
+                                    Margin="0 -5 0 0"
+                                    Text="Aproximate Root using Bisection Method"/>
+                            </Border>
+                        </StackPanel>
+                        <!--Contains Expander: More Info-->
+                        <materialDesign:Card 
+                            materialDesign:ShadowAssist.ShadowDepth="Depth2"
+                            Width="Auto"
+                            Margin="0 -5 0 0">
+                            <!--Root Cont. for Card-->
+                            <StackPanel>
+                                <Expander 
+                                    HorizontalAlignment="Stretch"
+                                    Margin="0 0 0 7">
+                                    <!--Header-->
+                                    <Expander.Header>
+                                        <!--Header Root Container-->
+                                        <StackPanel Orientation="Vertical">
+                                            <!--Icona and Title-->
+                                            <StackPanel Orientation="Horizontal">
+                                                <!--Icon-->
+                                                <materialDesign:PackIcon
+                                                    VerticalAlignment="Center"
+                                                    Margin="0 3 0 0"
+                                                    Kind="Keyboard"
+                                                    Width="20"
+                                                    Height="20"/>
+                                                <!--Title-->
+                                                <TextBlock
+                                                    Style="{StaticResource TB-Title-SemiBold}"
+                                                    FontSize="18"
+                                                    Text="Input Controls"
+                                                    Margin="10 0 0 0"/>
+                                            </StackPanel>
+                                            <!--Hint and Description-->
+                                            <TextBlock
+                                                Style="{StaticResource TB-Description}"
+                                                Text="click here to expand/hide contents"/>
+                                        </StackPanel>
+                                    </Expander.Header>
+                                    <!--Expander Root Contaner-->
+                                    <StackPanel
+                                        Orientation="Vertical"
+                                        Margin="25 0 25 0">
+                                        <!--SP Contents-->
+
+                                        <!--Title and Icon: Input-->
+                                        <StackPanel 
+                                            Orientation="Horizontal"
+                                            Margin="0 5 0 0">
+                                            <!--Icon-->
+                                            <materialDesign:PackIcon
+                                                Kind="Textbox"
+                                                Width="20"
+                                                Height="20"
+                                                VerticalAlignment="Center"/>
+                                            <!--Title-->
+                                            <TextBlock 
+                                                Style="{StaticResource TB-Title-SemiBold}"
+                                                Margin="5 0 0 0"
+                                                FontSize="22"
+                                                Text="Expression Input"/>
+                                        </StackPanel>
+                                        <!--Description-->
+                                        <Border>
+                                            <TextBlock 
+                                                Style="{StaticResource TB-Description}"
+                                                Margin="0 -2 0 0"
+                                                Text="type the function to aprox. and click check"/>
+                                        </Border>
+                                        <!--Input Controls-->
+                                        <Grid Margin="0 5 0 0 ">
+                                            <!--Col. Defintions-->
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="2*"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                            </Grid.ColumnDefinitions>
+                                            <!--Col 1: Icon-->
+                                            <materialDesign:PackIcon
+                                                Grid.Column="0"
+                                                VerticalAlignment="Bottom"
+                                                Foreground="#424242"
+                                                Kind="Function"
+                                                Width="25"
+                                                Height="25"/>
+                                            <!--Col 2: Input-->
+                                            <TextBox
+                                                Grid.Column="1"
+                                                x:Name="TextBox_ExpressionInput"
+                                                materialDesign:HintAssist.Hint="Input Equation"
+                                                materialDesign:HintAssist.IsFloating="True"
+                                                materialDesign:HintAssist.FloatingScale="1.20"
+                                                VerticalAlignment="Bottom"
+                                                MaxLines="1"
+                                                MaxLength="50"
+                                                Margin="5 0 20 0"
+                                                Text="x^2 - 3"/>
+                                            <!--Col. 3: Button-->
+                                            <Button
+                                                Grid.Column="2"
+                                                x:Name="Button_CheckExpression"
+                                                materialDesign:ShadowAssist.ShadowDepth="Depth3"
+                                                VerticalAlignment="Bottom" 
+                                                Click="Button_CheckExpression_Click">
+
+                                                <!--Icon and Label-->
+                                                <StackPanel Orientation="Horizontal">
+                                                    <!--Icon-->
+                                                    <materialDesign:PackIcon 
+                                                    Kind="Spellcheck"
+                                                    VerticalAlignment="Center"/>
+                                                    <!--Text-->
+                                                    <TextBlock
+                                                    FontFamily="Roboto"
+                                                    Margin="5 0 5 0"
+                                                    VerticalAlignment="Center"
+                                                    Text="CHECK"/>
+                                                </StackPanel>
+                                            </Button>
+                                        </Grid>
+
+                                        <!--Title and Icon: Evaluation-->
+                                        <StackPanel 
+                                            Orientation="Horizontal"
+                                            Margin="0 20 0 0">
+                                            <!--Icon-->
+                                            <materialDesign:PackIcon
+                                                Kind="Eye"
+                                                Width="20"
+                                                Height="20"
+                                                Margin="0 5 0 0"
+                                                VerticalAlignment="Center"/>
+                                            <!--Title-->
+                                            <TextBlock 
+                                                Style="{StaticResource TB-Title-SemiBold}"
+                                                Margin="5 0 0 0"
+                                                FontSize="22"
+                                                Text="Evaluation"/>
+                                        </StackPanel>
+                                        <!--Description-->
+                                        <Border>
+                                            <TextBlock 
+                                                Style="{StaticResource TB-Description}"
+                                                Margin="0 -2 0 0"
+                                                Text="the input formula parsed in Infix notation as LaTeX format"/>
+                                        </Border>
+                                        <!--Formula View-->
+                                        <Math:FormulaControl
+                                            x:Name="FC_InputEvaluation"
+                                            Margin="0 10 0 0"
+                                            Formula="x^2 - 3"/>
+
+                                        <!--Title and Icon: Parameters Input-->
+                                        <StackPanel 
+                                            Orientation="Horizontal"
+                                            Margin="0 20 0 0">
+                                            <!--Icon-->
+                                            <materialDesign:PackIcon
+                                                Kind="Settings"
+                                                Width="20"
+                                                Height="20"
+                                                Margin="0 5 0 0"
+                                                VerticalAlignment="Center"/>
+                                            <!--Title-->
+                                            <TextBlock 
+                                                Style="{StaticResource TB-Title-SemiBold}"
+                                                Margin="5 0 0 0"
+                                                FontSize="22"
+                                                Text="Parameter Input"/>
+                                        </StackPanel>
+                                        <!--Description-->
+                                        <Border>
+                                            <TextBlock 
+                                                Style="{StaticResource TB-Description}"
+                                                Margin="0 -2 0 0"
+                                                Text="Set the inputs that the algorithm will use."/>
+                                        </Border>
+                                        <!--Control: A and B Input-->
+                                        <Grid Margin="0 10 0 0">
+                                            <!--Col. Def-->
+                                            <Grid.ColumnDefinitions>
+                                                <!--Alpha-->
+                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="*"/>
+                                                <!--Seperator-->
+                                                <ColumnDefinition Width="15"/>
+                                                <!--Beta-->
+                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <!--Col. 1: Icon-->
+                                            <materialDesign:PackIcon
+                                                Grid.Column="0"
+                                                Foreground="#424242"
+                                                Kind="Alpha"
+                                                Width="20"
+                                                Height="20"
+                                                VerticalAlignment="Bottom"/>
+                                            <!--Col. 2: Textbox-->
+                                            <TextBox
+                                                Grid.Column="1"
+                                                x:Name="TextBox_InputA"
+                                                materialDesign:HintAssist.Hint="A Interval"
+                                                materialDesign:HintAssist.IsFloating="True"
+                                                materialDesign:HintAssist.FloatingScale="1.20"
+                                                VerticalAlignment="Bottom"
+                                                Margin="5 0 0 0" 
+                                                MaxLength="3"
+                                                MaxLines="1"
+                                                Text="1"/>
+                                            <!--Col. 4: Icon-->
+                                            <materialDesign:PackIcon
+                                                Grid.Column="3"
+                                                Foreground="#424242"
+                                                Kind="Beta"
+                                                Width="15"
+                                                Height="23"
+                                                VerticalAlignment="Bottom"/>
+                                            <!--Col. 5: Textbox-->
+                                            <TextBox
+                                                Grid.Column="4"
+                                                x:Name="TextBox_InputB"
+                                                materialDesign:HintAssist.Hint="B Interval"
+                                                materialDesign:HintAssist.IsFloating="True"
+                                                materialDesign:HintAssist.FloatingScale="1.20"
+                                                VerticalAlignment="Bottom"
+                                                Margin="5 0 0 0" 
+                                                MaxLength="3"
+                                                MaxLines="1"
+                                                Text="2"/>
+                                        </Grid>
+                                        <!--Control: Sigma and Symbol Input-->
+                                        <Grid Margin="0 10 0 0">
+                                            <!--Col. Def-->
+                                            <Grid.ColumnDefinitions>
+                                                <!--Alpha-->
+                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="35*"/>
+                                                <ColumnDefinition Width="97*"/>
+                                                <!--Seperator-->
+                                                <ColumnDefinition Width="15"/>
+                                                <!--Beta-->
+                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="132*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <!--Col. 1: Icon-->
+                                            <materialDesign:PackIcon
+                                                Grid.Column="0"
+                                                Foreground="#424242"
+                                                Kind="DecimalIncrease"
+                                                Width="20"
+                                                Height="20"
+                                                VerticalAlignment="Bottom"/>
+                                            <!--Col. 2: Textbox-->
+                                            <TextBox
+                                                Grid.Column="1"
+                                                x:Name="TextBox_InputEpsilon"
+                                                materialDesign:HintAssist.Hint="Epsilon Tolerance"
+                                                materialDesign:HintAssist.IsFloating="True"
+                                                materialDesign:HintAssist.FloatingScale="1.20"
+                                                VerticalAlignment="Bottom"
+                                                Margin="5,0,0,-1" 
+                                                MaxLength="15"
+                                                MaxLines="1"
+                                                Text="0.01" Grid.ColumnSpan="2"/>
+                                            <!--Col. 4: Icon-->
+                                            <materialDesign:PackIcon
+                                                Grid.Column="4"
+                                                Foreground="#424242"
+                                                Kind="Alphabetical"
+                                                Width="20"
+                                                Height="23"
+                                                VerticalAlignment="Bottom"/>
+                                            <!--Col. 5: Textbox-->
+                                            <TextBox
+                                                Grid.Column="5"
+                                                x:Name="TextBox_InputSymbol"
+                                                materialDesign:HintAssist.Hint="Symbol Used"
+                                                materialDesign:HintAssist.IsFloating="True"
+                                                materialDesign:HintAssist.FloatingScale="1.20"
+                                                VerticalAlignment="Bottom"
+                                                Text="x"
+                                                Margin="5,0,0,-1" 
+                                                MaxLength="1"
+                                                MaxLines="1"/>
+                                        </Grid>
+
+                                        <!--Check Button-->
+                                        <Button
+                                            x:Name="Button_EvaluateExpression"
+                                            Style="{StaticResource MaterialDesignRaisedAccentButton}"
+                                            Margin="5 35 5 15"
+                                            materialDesign:ShadowAssist.ShadowDepth="Depth3"
+                                            VerticalAlignment="Bottom"
+                                            Height="40" 
+                                            Click="Button_EvaluateExpression_Click">
+                                            <!--Icon and Label-->
+                                            <StackPanel Orientation="Horizontal">
+                                                <!--Icon-->
+                                                <materialDesign:PackIcon 
+                                                    Kind="Run"
+                                                    VerticalAlignment="Center"/>
+                                                <!--Text-->
+                                                <TextBlock
+                                                    FontFamily="Roboto"
+                                                    Margin="5 0 5 0"
+                                                    VerticalAlignment="Center"
+                                                    Text="EVALUATE EXPRESSION"/>
+                                            </StackPanel>
+                                        </Button>
+
+                                    </StackPanel>
+                                </Expander>
+                            </StackPanel>
+                        </materialDesign:Card>
+                    </StackPanel>
+                </materialDesign:Card>
+                
+                <!--Card: Sol.-->
+                <materialDesign:Card
+                    UniformCornerRadius="{StaticResource Double-CardCornerRadius}"
+                    materialDesign:ShadowAssist.ShadowDepth="Depth4"
+                    Margin="0 15 0 0">
+                    <!--Card Root Container-->
+                    <StackPanel>
+                        <!--Seperate Container-->
+                        <StackPanel Margin="{StaticResource Thickness-PaddingDefault}">
+                            <!--Title and Icon-->
+                            <StackPanel Orientation="Horizontal">
+                                <!--Icon-->
+                                <materialDesign:PackIcon
+                                    VerticalAlignment="Center"
+                                    Margin="0 3 0 0"
+                                    Kind="Lambda"
+                                    Width="30"
+                                    Height="30"/>
+                                <!--Title-->
+                                <TextBlock
+                                Style="{StaticResource TB-Title}"
+                                    FontSize="20"
+                                    Text="Solution"
+                                    Margin="10 0 0 0"/>
+                            </StackPanel>
+                            <!--Description-->
+                            <Border>
+                                <TextBlock 
+                                    Style="{StaticResource TB-Description}"
+                                    Margin="0 -5 0 0"
+                                    Text="Shows the table generated by the program"/>
+                            </Border>
+                        </StackPanel>
+                        <!--Contains Expander: More Info-->
+                        <materialDesign:Card 
+                            materialDesign:ShadowAssist.ShadowDepth="Depth2"
+                            Width="Auto"
+                            Margin="0 -5 0 0">
+                            <!--Root Cont. for Card-->
+                            <StackPanel>
+                                <Expander 
+                                    HorizontalAlignment="Stretch"
+                                    Margin="0 0 0 7">
+                                    <!--Header-->
+                                    <Expander.Header>
+                                        <!--Header Root Container-->
+                                        <StackPanel Orientation="Vertical">
+                                            <!--Icona and Title-->
+                                            <StackPanel Orientation="Horizontal">
+                                                <!--Icon-->
+                                                <materialDesign:PackIcon
+                                                    VerticalAlignment="Center"
+                                                    Margin="0 3 0 0"
+                                                    Kind="TableEdit"
+                                                    Width="20"
+                                                    Height="20"/>
+                                                <!--Title-->
+                                                <TextBlock
+                                                    Style="{StaticResource TB-Title-SemiBold}"
+                                                    FontSize="18"
+                                                    Text="Show Table"
+                                                    Margin="10 0 0 0"/>
+                                            </StackPanel>
+                                            <!--Hint and Description-->
+                                            <TextBlock
+                                                Style="{StaticResource TB-Description}"
+                                                Text="click here to expand/hide contents"/>
+                                        </StackPanel>
+                                    </Expander.Header>
+                                    <!--Expander Root Contaner-->
+                                    <StackPanel
+                                        Orientation="Vertical"
+                                        Margin="25 0 25 15">
+                                        <!--SP Contents-->
+
+                                        <!--Title and Icon: Input-->
+                                        <StackPanel 
+                                            Orientation="Horizontal"
+                                            Margin="0 5 0 0">
+                                            <!--Icon-->
+                                            <materialDesign:PackIcon
+                                                Kind="Table"
+                                                Width="20"
+                                                Height="20"
+                                                VerticalAlignment="Center"/>
+                                            <!--Title-->
+                                            <TextBlock 
+                                                Style="{StaticResource TB-Title-SemiBold}"
+                                                Margin="5 0 0 0"
+                                                FontSize="22"
+                                                Text="Bisection Method Table"/>
+                                        </StackPanel>
+                                        <!--Description-->
+                                        <Border>
+                                            <TextBlock 
+                                                Style="{StaticResource TB-Description}"
+                                                Margin="0 -2 0 0"
+                                                Text="shows each iteration row that the program generated (adjust columns as necessary.)"/>
+                                        </Border>
+                                        
+                                        <!---->
+                                        <ListView Name="ListView_Solution">
+                                            <ListView.View>
+                                                <GridView>
+                                                    <GridViewColumn Header="i" Width="45" DisplayMemberBinding="{Binding Iteration}" />
+                                                    <GridViewColumn Header="A" Width="50" DisplayMemberBinding="{Binding A}" />
+                                                    <GridViewColumn Header="B" Width="50" DisplayMemberBinding="{Binding B}" />
+                                                    <GridViewColumn Header="f(a)" Width="75" DisplayMemberBinding="{Binding FunctOfA}" />
+                                                    <GridViewColumn Header="f(b)" Width="75" DisplayMemberBinding="{Binding FunctOfB}" />
+                                                    <GridViewColumn Header="C" Width="75" DisplayMemberBinding="{Binding C}" />
+                                                    <GridViewColumn Header="A - B" Width="75" DisplayMemberBinding="{Binding Abs}" />
+                                                    <GridViewColumn Header="f(c)" Width="75" DisplayMemberBinding="{Binding FunctOfC}" />
+                                                </GridView>
+                                            </ListView.View>
+                                        </ListView>
+
+                                    </StackPanel>
+                                </Expander>
+                            </StackPanel>
+                        </materialDesign:Card>
+                    </StackPanel>
+                </materialDesign:Card>
+                
+                <!--Card: Sol.-->
+                <materialDesign:Card
+                    UniformCornerRadius="{StaticResource Double-CardCornerRadius}"
+                    materialDesign:ShadowAssist.ShadowDepth="Depth4"
+                    Margin="0 15 0 0">
+                    <!--Card Root Container-->
+                    <StackPanel>
+                        <!--Seperate Container-->
+                        <StackPanel Margin="{StaticResource Thickness-PaddingDefault}">
+                            <!--Title and Icon-->
+                            <StackPanel Orientation="Horizontal">
+                                <!--Icon-->
+                                <materialDesign:PackIcon
+                                    VerticalAlignment="Center"
+                                    Margin="0 3 0 0"
+                                    Kind="Equal"
+                                    Width="30"
+                                    Height="30"/>
+                                <!--Title-->
+                                <TextBlock
+                                Style="{StaticResource TB-Title}"
+                                    FontSize="20"
+                                    Text="Result"
+                                    Margin="10 0 0 0"/>
+                            </StackPanel>
+                            <!--Description-->
+                            <Border>
+                                <TextBlock 
+                                    Style="{StaticResource TB-Description}"
+                                    Margin="0 -5 0 0"
+                                    Text="Shows the aprox. of the root"/>
+                            </Border>
+                        </StackPanel>
+                        <!--Contains Expander: More Info-->
+                        <materialDesign:Card 
+                            materialDesign:ShadowAssist.ShadowDepth="Depth2"
+                            Width="Auto"
+                            Margin="0 -5 0 0">
+                            <!--Root Cont. for Card-->
+                            <StackPanel>
+                                <Expander 
+                                    HorizontalAlignment="Stretch"
+                                    Margin="0 0 0 7">
+                                    <!--Header-->
+                                    <Expander.Header>
+                                        <!--Header Root Container-->
+                                        <StackPanel Orientation="Vertical">
+                                            <!--Icona and Title-->
+                                            <StackPanel Orientation="Horizontal">
+                                                <!--Icon-->
+                                                <materialDesign:PackIcon
+                                                    VerticalAlignment="Center"
+                                                    Margin="0 3 0 0"
+                                                    Kind="Eye"
+                                                    Width="20"
+                                                    Height="20"/>
+                                                <!--Title-->
+                                                <TextBlock
+                                                    Style="{StaticResource TB-Title-SemiBold}"
+                                                    FontSize="18"
+                                                    Text="Show Result"
+                                                    Margin="10 0 0 0"/>
+                                            </StackPanel>
+                                            <!--Hint and Description-->
+                                            <TextBlock
+                                                Style="{StaticResource TB-Description}"
+                                                Text="click here to expand/hide contents"/>
+                                        </StackPanel>
+                                    </Expander.Header>
+                                    <!--Expander Root Contaner-->
+                                    <StackPanel
+                                        Orientation="Vertical"
+                                        Margin="25 0 25 15">
+                                        <!--SP Contents-->
+
+                                        <!--Title and Icon: Input-->
+                                        <StackPanel 
+                                            Orientation="Horizontal"
+                                            Margin="0 5 0 0">
+                                            <!--Icon-->
+                                            <materialDesign:PackIcon
+                                                Kind="Calculator"
+                                                Width="20"
+                                                Height="20"
+                                                VerticalAlignment="Center"/>
+                                            <!--Title-->
+                                            <TextBlock 
+                                                Style="{StaticResource TB-Title-SemiBold}"
+                                                Margin="5 0 0 0"
+                                                FontSize="22"
+                                                Text="Aproximation"/>
+                                        </StackPanel>
+                                        <!--Result-->
+                                        <Math:FormulaControl 
+                                            x:Name="FC_Aproximation"
+                                            Formula="NaN"
+                                            Margin="0 10 0 0"/>
+                                        
+                                        <!--Title and Icon: Input-->
+                                        <StackPanel 
+                                            Orientation="Horizontal"
+                                            Margin="0 15 0 0">
+                                            <!--Icon-->
+                                            <materialDesign:PackIcon
+                                                Kind="DecimalIncrease"
+                                                Width="22"
+                                                Height="22"
+                                                VerticalAlignment="Center"/>
+                                            <!--Title-->
+                                            <TextBlock 
+                                                Style="{StaticResource TB-Title-SemiBold}"
+                                                Margin="5 0 0 0"
+                                                FontSize="22"
+                                                Text="Rounded Off"/>
+                                        </StackPanel>                              
+                                        <!--Result-->
+                                        <Math:FormulaControl 
+                                            x:Name="FC_AproximationRounded"
+                                            Formula="NaN"
+                                            Margin="0 10 0 0"/>
+                                        
+                                        <!--Title and Icon: Chopped Off-->
+                                        <StackPanel 
+                                            Orientation="Horizontal"
+                                            Margin="0 15 0 0">
+                                            <!--Icon-->
+                                            <materialDesign:PackIcon
+                                                Kind="DecimalIncrease"
+                                                Width="22"
+                                                Height="22"
+                                                VerticalAlignment="Center"/>
+                                            <!--Title-->
+                                            <TextBlock 
+                                                Style="{StaticResource TB-Title-SemiBold}"
+                                                Margin="5 0 0 0"
+                                                FontSize="22"
+                                                Text="Chopped Off"/>
+                                        </StackPanel>                              
+                                        <!--Result-->
+                                        <Math:FormulaControl 
+                                            x:Name="FC_AproximationChopped"
+                                            Formula="NaN"
+                                            Margin="0 10 0 0"/>
+                                    </StackPanel>
+                                </Expander>
+                            </StackPanel>
+                        </materialDesign:Card>
+                    </StackPanel>
+                </materialDesign:Card>
+            </StackPanel>
+        </Border>
+    </ScrollViewer>
+</UserControl>
